@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Bootstrap Template</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link rel="stylesheet" type="text/css" href="../bootstrap3/css/bt3.css">
+<link rel="stylesheet" type="text/css" href="../bootstrap3/font-awesome-4.7.0/css/font-awesome.css"/>
+  <style>
+    body{
+      background-color: #2e2e2e;
+    }
+    /*导航条样式*/
+    .navbar{
+      background-color: black;
+      border: 0;
+      margin-top: 10px;
+    }
+    .navbar-brand>img{
+      margin-top: -12px;
+    }
+    /*搜索框样式*/
+    form>input{
+      background-color: #383838;
+      color: #a9a8a8;
+      height: 30px;
+      border-radius: 30px;/*为了实现半圆效果*/
+      border: 0;
+      padding: 10px 20px;
+      margin-top: 10px;
+      outline: none;/*去掉外边框*/
+    }
+    form>button{
+      background-color: rgba(0,0,0,0);/*设置背景透明*/
+      border: 0;
+      color: #a9a8a8;
+      position: relative;
+      right: 40px;
+    }
+    .nav.navbar-nav>li>a:hover{
+      color: #ffc600;
+    }
+    /*右侧浏览最多样式*/
+    .list-group-item{
+      background-color: black;
+      border: 0;
+      color: #ffc600;
+    }
+    .list-head{
+      background-color: #ffc600;
+      color: black;
+    }
+    .well{
+      background-color: black;
+      color: #ffc600;
+      font-weight: bold;
+      text-align: center;
+      border: 0;
+    }
+    .floatView>p{
+      margin: 0;
+      font-size: 14px;
+    }
+    img{
+      transition-duration: 2s;/*设置动画持续时间2s*/
+    }
+/*    img:hover{
+      transform: scale(1.2);!*设置缩放倍数120%*!
+    }*/
+
+
+
+  </style>
+</head>
+<body>
+  <!--container为了居中-->
+  <header class="container">
+    <!--导航条开始-->
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="home">
+            <img alt="Brand" src="images/logo.png">
+          </a>
+        </div>
+        <!--分类标签开始-->
+        <ul class="nav navbar-nav">
+
+          <li><a href="/home">首页</a></li>
+
+          <li th:each="i:${list}">
+            <a th:href="'home?cid='+${i.id}" th:text="${i.name}">手绘</a>
+          </li>
+
+          <li>
+            <form action="/home">
+              <input type="text" name="keyword" placeholder="Search">
+              <button type="submit">
+                <i class="fa fa-search"></i>
+              </button>
+            </form>
+          </li>
+        </ul>
+        <!--分类标签结束-->
+        <!--右侧列表开始-->
+        <ul class="nav navbar-nav navbar-right">
+          <li th:if="${user}==null"><a href="showlogin" class="fa fa-user-circle-o">管理员入口</a></li>
+          <li  th:if="${user}!=null"><a href="showsend" class="fa fa-user-circle-o">发布作品</a></li>
+          <li  th:if="${user}!=null"><a href="logout" class="fa fa-user-circle-o" onclick="return confirm('确定退出吗')">退出登录</a></li>
+        </ul>
+        <!--右侧列表结束-->
+      </div>
+    </nav>
+    <!--导航条结束-->
+  </header>
+
+  <section class="container">
+    <!--栅格划分9:3-->
+    <div class="row">
+      <div class="col-md-9" style="color: #ffc600">
+        <!--详情开始-->
+        <h2 th:text="${product.title}" class="page-header"></h2>
+        <div>
+          <span th:text="${product.author}+'发布于'+${product.createdStr}"></span>
+          <!--pull-right 让元素靠右显示 类似float:right-->
+          <span class="pull-right">
+            <span class="fa fa-eye" th:text="${product.viewCount}"></span>
+            <span class="fa fa-thumbs-o-up" th:text="${product.likeCount}"></span>
+          </span>
+        </div>
+        <!--显示删除按钮和点赞按钮-->
+        <div class="text-center">
+          <a th:href="'addLikeCount?id='+${product.id}" th:if="${user}!=null" class="btn btn-info">给作品点赞</a>
+          <a th:href="'delete?id='+${product.id}" th:if="${user}!=null" class="btn btn-danger">删除作品</a>
+        </div>
+        <!--img-responsive 响应式图片 center-block 居中-->
+        <img th:src="${product.url}" class="img-responsive center-block" alt=""
+        style="margin:20px auto;">
+        <!--详情结束-->
+      </div>
+      <div class="col-md-3">
+        <ul class="list-group">
+          <li class="list-group-item list-head">
+            <h4>
+              <i class="fa fa-eye"> 浏览最多</i>
+            </h4>
+          </li>
+          <li class="list-group-item" th:each="v:${vlist}">
+            <!-- 左对齐 -->
+            <div class="media">
+              <div class="media-left">
+                <a href="'detail?id='+${v.id}">
+                <img th:src="${v.url}" class="media-object" style="width:60px">
+                </a>
+              </div>
+              <div class="media-body">
+                <a href="'detail?id='+${v.id}">
+                <h4 class="media-heading" th:text="${v.title}"></h4>
+                </a>
+                <p th:text="${v.intro}"></p>
+              </div>
+            </div>
+          </li>
+        </ul>
+
+        <!--最受欢迎开始-->
+        <ul class="list-group">
+          <li class="list-group-item list-head">
+            <h4>
+              <i class="fa fa-thumbs-o-up"> 最受欢迎</i>
+            </h4>
+          </li>
+          <li class="list-group-item" th:each="l:${llist}">
+            <!-- 左对齐 -->
+            <div class="media">
+              <div class="media-left">
+                <img th:src="${l.url}" class="media-object" style="width:60px">
+              </div>
+              <div class="media-body">
+                <h4 class="media-heading" th:text="${l.title}"></h4>
+                <p th:text="${l.intro}"></p>
+              </div>
+            </div>
+          </li>
+        </ul>
+        <!--最受欢迎结束-->
+
+      </div>
+    </div>
+  </section>
+  <footer class="container">
+    <div class="well">
+      Copyright © 北京达内金桥科技有限公司版权所有 京ICP备12003709号-3 京公网安备 11010802029572号
+    </div>
+  </footer>
+</body>
+<script type="text/javascript" src="../bootstrap3/jquery.min.js"></script>
+<script type="text/javascript" src="../bootstrap3/js/bootstrap.js"></script>
+<script type="text/javascript" src="../bootstrap3/js/holder.js"></script>
+<script type="text/javascript" src="../bootstrap3/js/html5shiv.min.js"></script>
+<script type="text/javascript" src="../bootstrap3/js/css3-mediaqueries.js"></script>
+<script type="text/javascript" src="../bootstrap3/js/respond.min.js"></script>
+<!--引入瀑布流相关框架文件-->
+<script src="js/masonry.pkgd.min.js"></script>
+<script src="js/imagesloaded.pkgd.js"></script>
+<script>
+//瀑布流相关 初始化代码
+  $(".grid").masonry({
+    itemSelector:".grid-item",//告诉框架选择到瀑布流元素的选择器是什么
+    columnWidth:210 //因为css设置每个元素宽度为200 但是有10个像素的间距
+  })
+
+
+  $(".grid").imagesLoaded().progress(function () {
+      //图片加载完之后会执行此处代码
+    $(".grid").masonry("layout"); //让瀑布流重新计算显示效果 解决图片层叠的问题
+  });
+  //得到第一个轮播图 设置显示
+   $(".item").eq(0).attr("class","item active");
+   //让轮播图自己移动
+   $("#myCarousel").carousel("cycle");
+
+   /*瀑布流中的图片添加鼠标移入移出事件*/
+   $(".grid-item").hover(function () {
+     //得到移入元素里面的蓝色div 让其显示
+     $(this).children("div").stop().fadeIn(500);
+   },function () {//鼠标移出
+     $(this).children("div").stop().fadeOut(500);
+   })
+
+</script>
+</html>
