@@ -24,14 +24,26 @@ public class DetailServlet extends HttpServlet {
 
         Context context = new Context();
 
+        ProductDao productDao = new ProductDao();
+
         //取出session 对象里面的user对象 并装进容器
         HttpSession session = request.getSession();
+
+        //从session中获取之前是否保存过此作品id
+        String viewid = (String) session.getAttribute("view"+id);
+        //如果viewid为null说明此作品并没有保存过 也就是没有增加过浏览量
+        if (viewid==null){
+            //浏览量+1
+            productDao.addViewCount(Integer.parseInt(id));
+            session.setAttribute("view"+id,id);
+        }
+
         User user = (User)session.getAttribute("user");
         context.setVariable("user",user);
 
-        ProductDao productDao = new ProductDao();
         Product product = productDao.findById(Integer.parseInt(id));
         context.setVariable("product",product);
+
 
         List<Product> vlist = productDao.findViewList();
         context.setVariable("vlist",vlist);

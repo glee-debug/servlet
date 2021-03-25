@@ -195,6 +195,19 @@ public class ProductDao {
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1,id);
             ps.executeUpdate();
+            System.out.println("喜欢+1");
+        }  catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
+    public void addViewCount(int id) {
+        try(Connection conn = DBUtils.getConn()) {
+            String sql = "update product set viewCount=viewCount+1 where id=?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1,id);
+            ps.executeUpdate();
+            System.out.println("浏览量+1");
         }  catch (SQLException throwables) {
             throwables.printStackTrace();
         }

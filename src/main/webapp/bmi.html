@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>bmi</title>
+</head>
+<body>
+    <input type="text" id="height" name="h" placeholder="请输入身高(m)">
+    <input type="text" id="weight" name="w" placeholder="请输入体重(kg)">
+    <input type="button" value="提交">
+    <h3>检测结果:</h3>
+</body>
+<script src="bootstrap3/jquery.min.js"></script>
+<script>
+    $("input:last").click(
+        function () {
+            $.ajax({
+                type: "get",
+                url: "bmi",
+                data: "height=" + $("#height").val() + "&weight=" + $("#weight").val(),
+                success: function (msg) {
+                    $("h3").text(msg);
+                }
+            })
+        }
+    );
+</script>
+</html>

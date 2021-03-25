@@ -7,6 +7,7 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 @WebServlet(name = "LoginServlet", value = "/loginaction")
 public class LoginServlet extends HttpServlet {
@@ -23,8 +24,10 @@ public class LoginServlet extends HttpServlet {
         UserDao userDao = new UserDao();
         User user = userDao.login(username,password);
         if (user==null){
-            System.out.println("登录失败!");
-            response.sendRedirect("/showlogin");
+            response.setContentType("text/html;charset=utf-8");
+            PrintWriter pw = response.getWriter();
+            pw.println("用户名或密码错误");
+            pw.close();
         }else {
             //得到session对象
             HttpSession session = request.getSession();

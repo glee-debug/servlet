@@ -4,4 +4,8 @@
 
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
+  <welcome-file-list>
+    <!--当请求路径为localhost:8080是 自动向localhost:8080/home发出请求-->
+    <welcome-file>home</welcome-file>
+  </welcome-file-list>
 </web-app>

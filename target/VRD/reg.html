@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>注册</title>
+</head>
+<body>
+<form action="reg">
+    <input type="text" name="username"><span></span><br>
+    <input type="submit" value="注册">
+</form>
+</body>
+<script src="bootstrap3/jquery.min.js"></script>
+<script>
+    //给文本框添加失去焦点事件
+    $("input:first").blur(function (){
+        $.ajax({
+            type:"get",
+            url:"checkUser",
+            data:"username="+$("input:first").val(),
+            success:function (msg){
+                //把服务器返回的数据显示到span中
+                $("span").text(msg);
+            }
+        })
+    })
+</script>
+</html>

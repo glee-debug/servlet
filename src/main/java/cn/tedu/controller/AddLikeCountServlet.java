@@ -14,7 +14,12 @@ public class AddLikeCountServlet extends HttpServlet {
 
         String id = request.getParameter("id");
         ProductDao productDao = new ProductDao();
-        productDao.addLikeCount(Integer.parseInt(id));
+        HttpSession session = request.getSession();
+        String likeid = (String)session.getAttribute("like"+id);
+        if (likeid==null){
+            productDao.addLikeCount(Integer.parseInt(id));
+            session.setAttribute("like"+id,id);
+        }
         response.sendRedirect("/detail?id="+id);
     }
 

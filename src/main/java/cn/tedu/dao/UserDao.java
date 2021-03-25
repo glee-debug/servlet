@@ -26,4 +26,20 @@ public class UserDao {
         }
         return user;
     }
+
+    public boolean selectUsername(String username) {
+        boolean flg=false;
+        try(Connection conn = DBUtils.getConn()) {
+            String sql = "select id from vrduser where username=?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1,username);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()){
+                flg = true;
+            }
+        }  catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return flg;
+    }
 }

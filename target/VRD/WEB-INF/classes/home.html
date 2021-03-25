@@ -125,6 +125,7 @@
         <ul class="nav navbar-nav navbar-right">
           <li th:if="${user}==null"><a href="showlogin" class="fa fa-user-circle-o">管理员入口</a></li>
           <li  th:if="${user}!=null"><a href="showsend" class="fa fa-user-circle-o">发布作品</a></li>
+          <li  th:if="${user}!=null"><a href="showBanner" class="fa fa-user-circle-o">轮播图</a></li>
           <li  th:if="${user}!=null"><a href="logout" class="fa fa-user-circle-o" onclick="return confirm('确定退出吗')">退出登录</a></li>
         </ul>
         <!--右侧列表结束-->
@@ -138,9 +139,9 @@
     <div id="myCarousel" class="carousel slide">
       <!-- 轮播（Carousel）指标 -->
       <ol class="carousel-indicators">
-        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-        <li data-target="#myCarousel" data-slide-to="1"></li>
-        <li data-target="#myCarousel" data-slide-to="2"></li>
+        <!--使用th:each进行遍历时 变量名为什么 就会生成一个XXXStat的一个变量 里面装的是遍历的下标-->
+        <!--如:遍历名为b 则会生成一个bStat变量 bStat.index得到遍历的下标-->
+        <li  th:each="b:${blist}" data-target="#myCarousel" th:attr="data-slide-to=${bStat.index}"></li>
       </ol>
       <!-- 轮播（Carousel）项目 -->
       <div class="carousel-inner">
@@ -179,6 +180,7 @@
           </div>
         </div>
         <!--瀑布流结束-->
+        <button class="btn center-block btn-success">加载更多</button>
       </div>
       <div class="col-md-3">
         <ul class="list-group">
@@ -264,6 +266,8 @@
   });
   //得到第一个轮播图 设置显示
    $(".item").eq(0).attr("class","item active");
+   // 轮播图底下的点
+   $("ol>li").eq(0).attr("class","active");
    //让轮播图自己移动
    $("#myCarousel").carousel("cycle");
 

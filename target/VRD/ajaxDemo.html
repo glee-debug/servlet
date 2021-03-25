@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ajax</title>
+</head>
+<body>
+<h1>0</h1>
+<h2>我是用来显示服务器数据的</h2>
+<input type="button" value="发出服务器请求">
+<script src="bootstrap3/jquery.min.js"></script>
+<script>
+    let count = 0;
+    setInterval(function (){
+        $("h1").text(count++);
+    },1000);
+    //给按钮添加点击事件
+    $("input").click(function (){
+        //发出异步请求
+        $.ajax({
+            //type控制请求方式
+            type:"get",
+            //请求地址
+            url:"hello",
+            // 请求参数 多个参数用&分割
+            data:"info=abc&msg=xxx",
+            // 此方法当服务器返回数据时执行,msg代表服务器返回的数据 请求成功时调用此方法
+            success:function (msg){
+                $("h2").text(msg);
+            }
+        })
+    });
+</script>
+</body>
+</html>

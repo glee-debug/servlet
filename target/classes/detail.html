@@ -132,11 +132,12 @@
         <!--显示删除按钮和点赞按钮-->
         <div class="text-center">
           <a th:href="'addLikeCount?id='+${product.id}" th:if="${user}!=null" class="btn btn-info">给作品点赞</a>
-          <a th:href="'delete?id='+${product.id}" th:if="${user}!=null" class="btn btn-danger">删除作品</a>
+          <a th:href="'delete?id='+${product.id}" th:if="${user}!=null" class="btn btn-danger" onclick="return confirm('确定删除吗')">删除作品</a>
         </div>
         <!--img-responsive 响应式图片 center-block 居中-->
         <img th:src="${product.url}" class="img-responsive center-block" alt=""
         style="margin:20px auto;">
+        <p th:text="${product.intro}" class="text-center"></p>
         <!--详情结束-->
       </div>
       <div class="col-md-3">
@@ -150,13 +151,13 @@
             <!-- 左对齐 -->
             <div class="media">
               <div class="media-left">
-                <a href="'detail?id='+${v.id}">
-                <img th:src="${v.url}" class="media-object" style="width:60px">
+                <a th:href="'detail?id='+${v.id}">
+                  <img th:src="${v.url}" class="media-object" style="width:60px">
                 </a>
               </div>
               <div class="media-body">
-                <a href="'detail?id='+${v.id}">
-                <h4 class="media-heading" th:text="${v.title}"></h4>
+                <a th:href="'detail?id='+${v.id}">
+                  <h4 class="media-heading" th:text="${v.title}"></h4>
                 </a>
                 <p th:text="${v.intro}"></p>
               </div>
@@ -175,10 +176,15 @@
             <!-- 左对齐 -->
             <div class="media">
               <div class="media-left">
-                <img th:src="${l.url}" class="media-object" style="width:60px">
+                <a th:href="'detail?id='+${l.id}">
+                  <img th:src="${l.url}" class="media-object" style="width:60px">
+                </a>
               </div>
               <div class="media-body">
-                <h4 class="media-heading" th:text="${l.title}"></h4>
+
+                <a th:href="'detail?id='+${l.id}">
+                  <h4 class="media-heading" th:text="${l.title}"></h4>
+                </a>
                 <p th:text="${l.intro}"></p>
               </div>
             </div>
