@@ -2,6 +2,7 @@ package cn.tedu.controller;
 
 import cn.tedu.dao.BannerDao;
 import cn.tedu.entities.Banner;
+import cn.tedu.entities.User;
 import cn.tedu.utils.ThUtils;
 import org.thymeleaf.context.Context;
 
@@ -16,6 +17,7 @@ import java.util.List;
 public class ShowBannerServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
         BannerDao bannerDao = new BannerDao();
         List<Banner> banlist = bannerDao.findAll();
         Context context = new Context();

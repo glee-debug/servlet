@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    //1.创建json数组格式
+    let j1 = ["刘备","关羽","张飞"];
+    console.log(j1[1]);
+    //2.创建json map格式
+    let j2 = {"name":"曹操","age":18};
+    console.log(j2.name)
+    //3.嵌套格式
+    let j3 = {"name":"曹操","age":18,"friends":["刘备","关羽","张飞"]};
+    console.log(j3.friends[2])
+    //4.嵌套格式2
+    let j4 = [{"name":"刘德华","age":18},{"name":"张学友","age":20}];
+    console.log(j4[1].name);
+    //json字符串和json对象区别 从服务器返回的内容一般是json字符串
+    let jsonString = '["刘备","张飞","关羽"]';
+    // 将json字符串转成json对象
+    let j5 = JSON.parse(jsonString);
+    //j5=["刘备","张飞","关羽"]
+    console.log(j5[0]);
+
+</script>
+</body>
+</html>

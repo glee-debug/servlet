@@ -278,6 +278,44 @@
    },function () {//鼠标移出
      $(this).children("div").stop().fadeOut(500);
    })
+//给加载更多按钮添加点击事件
+    $("button").click(function (){
+      $.ajax({
+        type:"get",
+        url:"loadmore",
+        data:"count="+$(".grid-item").length,//jquery对象是个数组,把已有作品的数量传递过去
+        success:function (json){
+          //由于服务器设置响应类型时设置成了application/json 所以此时的msg已经被转换成json对象
+          for (let i = 0; i < json.length; i++) {
+            let product = json[i];
+            //创建表示瀑布流的元素组合
+/*            <div className="grid-item"> <a><img className="img-responsive" alt=""></a><div className="floatView"><p></p><span className="fa fa-eye"></span><span className="fa fa-thumbs-o-up"></span></div></div>*/
+            let item = $('<div class="grid-item"> <a><img class="img-responsive" alt=""></a> <div class="floatView"><p></p><span class="fa fa-eye"></span><span class="fa fa-thumbs-o-up"></span> </div> </div>');
+            //给元素组合厘米那的元素设置显示内容
+            // find方法可以查找到某个后代元素
+            item.find("img").attr("src",product.url);
+            item.find("p").text(product.title);
+            item.find("span").eq(0).text(product.viewCount);
+            item.find("span").eq(1).text(product.likeCount);
+            item.find("a").attr("href","detail?id="+product.id);
+            // 把元素添加到页面中显示
+            $(".grid").append(item);
+            // 通知瀑布流框架加载了新元素
+            $(".grid").masonry("appended",item);
+            //图片加载完成时刷新布局
+            $(".grid").imagesLoaded().progress(function () {
+              //解决图片重叠问题
+              $(".grid").masonry("layout");
+            });
+            item.hover(function () {
+              $(this).children("div").stop().fadeIn(500);
+            },function () {
+              $(this).children("div").stop().fadeOut(500);
+            });
 
+          }
+        }
+      })
+    })
 </script>
 </html>

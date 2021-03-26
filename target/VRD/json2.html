@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<input type="button" value="发出请求">
+<script src="bootstrap3/jquery.min.js"></script>
+<script>
+    $("input").click(function () {
+        //发出异步请求
+        $.ajax({
+            type:"get",
+            url:"hellojson",
+            data:"",
+            success:function (msg) {
+                //将json字符串转成json对象
+                let json = JSON.parse(msg);
+                for (let i = 0; i < json.length; i++) {
+                    let p = json[i];
+                    let title_h3 = $("<h3></h3>");
+                    title_h3.text(p.title);
+                    $("body").append(title_h3);
+                    let img = $("<img width='200px'>");
+                    img.attr("src",p.url);
+                    $("body").append(img);
+                }
+            }
+        })
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue</title>
+</head>
+<body>
+<div id="mydiv">
+    <!--{{}}里面写的变量会和vue对象中的data里面的变量建立关系-->
+    <h3>商品数量: {{count}} </h3>
+</div>
+<input type="button" value="添加">
+<script src="../bootstrap3/jquery.min.js"></script>
+<!--引入vue框架-->
+<script src="../js/vue.js"></script>
+<script>
+    //创建vue对象
+    let v = new Vue({
+        el:"#mydiv",//当前vue对象所管理的元素选择器
+        data:{count:0}
+    })
+    $("input").click(function () {
+        //此时只需要修改count变量的值 页面内容会自动跟着变 因为页面加载时已经建立好了关系
+        v.count++;
+    });
+
+</script>
+</body>
+</html>

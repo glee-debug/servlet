@@ -29,7 +29,7 @@ public class ProductDao {
     public List<Product> findall() {
         List<Product> list = new ArrayList<>();
         try(Connection conn = DBUtils.getConn()) {
-            String sql = "select id,title,url,viewCount,likeCount from product";
+            String sql = "select id,title,url,viewCount,likeCount from product limit 0,5";
             Statement s = conn.createStatement();
             ResultSet rs = s.executeQuery(sql);
             while (rs.next()){
@@ -211,5 +211,27 @@ public class ProductDao {
         }  catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+    }
+
+    public List<Product> loadmore(int count) {
+        List<Product> list = new ArrayList<>();
+        try(Connection conn = DBUtils.getConn()) {
+            String sql = "select id,title,url,viewCount,likeCount from product limit ?,5";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1,count);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                int id = rs.getInt(1);
+                String title = rs.getString(2);
+                String url = rs.getString(3);
+                int viewCount = rs.getInt(4);
+                int likeCount = rs.getInt(5);
+                Product product = new Product(id,title,url,viewCount,likeCount);
+                list.add(product);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return list;
     }
 }

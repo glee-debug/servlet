@@ -2,6 +2,7 @@ package cn.tedu.controller;
 
 import cn.tedu.dao.CategoryDao;
 import cn.tedu.entities.Category;
+import cn.tedu.entities.User;
 import cn.tedu.utils.ThUtils;
 import org.thymeleaf.context.Context;
 
